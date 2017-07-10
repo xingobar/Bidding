@@ -20,7 +20,7 @@ function init(){
 
     websocket.onmessage = function(e){
         console.log('receive message success');
-        console.log(e); 
+     //   console.log(e); 
         updateTable(e);
       //  websocket.close();
     };
@@ -79,8 +79,23 @@ function appendToTable(){
 }
 function updateTable(e){
     var currentName = $('.username').text();
-    if(currentName !== e.name && e.name !== undefined){
-        console.log('update table');
+    var e_array = JSON.parse(e.data);
+    var name ;
+    var now ;
+    var bidding_price;
+    if(Array.isArray(e_array)){
+        name = e_array[0]['name'];
+        console.log(name);
+        now = e_array[0]['now'];
+        bidding_price = e_array[0]['bidding_price'];
+    }
+    if(currentName !== name && name !== undefined){
+        var tbody = $('.bidding-table').find('tbody');
+        $(tbody).append('<tr>\
+                            <td>'+ now + ' </td>\
+                        <td>'+ name + '</td>\
+                        <td>' + bidding_price + '</td>\
+                    </tr>');
     }
 }
 function sendMessage(){
