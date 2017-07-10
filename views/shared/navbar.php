@@ -12,8 +12,13 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="./index.php">首頁</a></li>
-        <li><a href="./history.php">下標紀錄</a></li>
-        <li><a href="#">個人資料編輯</a></li>
+        <?php 
+          if(isset($_SESSION['username'])){
+            echo '<li><a href="./history.php">下標紀錄</a></li>';
+            echo '<li><a href="#">個人資料編輯</a></li>';
+          }
+        ?>
+        <li><a href="#">儲值</a></li>
         <?php 
           if(isset($_SESSION['type'])  && ($_SESSION['type'] === 'admin')){
             echo '<li><a href="./upload.php">產品上傳</a></li>';
