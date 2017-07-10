@@ -1,6 +1,8 @@
 var websocket ;
+var msg ;
 $(document).ready(function(){
     init();
+    postBiddingData();
 });
 
 function init(){
@@ -8,7 +10,8 @@ function init(){
     websocket = new WebSocket(wsUrl);
 
     websocket.onopen = function(e){
-        sendText();
+       // sendText();
+       console.log('connect success');
     };
 
     websocket.onclose = function(){
@@ -16,9 +19,10 @@ function init(){
     }
 
     websocket.onmessage = function(e){
-        console.log(e);
-        console.log(e.data);  
-        websocket.close();
+        console.log('receive message success');
+        console.log(e); 
+        updateTable(e);
+      //  websocket.close();
     };
 }
 
@@ -35,12 +39,58 @@ function sendText() {
 function postBiddingData(){
     $('.bidding').click(function(){
         $.ajax({
-            url:'../Bidding/insertBiddingHistory',
+            url:'/biddingKing/Bidding/BiddingHistory.php',
             type:'post',
             data:{
-                amount:$("#amount").val(),
-                
+                price:$("#amount").val(),
+                floor_price:$("#floor_price").text().split('元')[0],
+                productId :$("#product_id").val()
+            },
+            success:function(data){
+                var code = JSON.parse(data).msg;
+                if(code === 'success'){
+                    swal('下標成功','','success');
+                    updateNavbar();
+                    appendToTable();
+                    sendMessage();
+                    return;
+                }
+                swal('餘額不足','','warning');
             }
         });
     });
+}
+function updateNavbar(){
+    var remain = parseInt($('.remain').text());
+    var diff = remain - parseInt($('#amount').val());
+    $('.remain').text(diff.toString());
+}
+
+function appendToTable(){
+    var tbody = $('.bidding-table').find('tbody');
+    var now = new Date();
+    now = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDay(); 
+    var userName = $('.username').text();
+    $(tbody).append('<tr>\
+                        <td>'+ now + ' </td>\
+                        <td>'+ userName + '</td>\
+                        <td>' + $('#amount').val() + '</td>\
+                    </tr>');
+}
+function updateTable(e){
+    var currentName = $('.username').text();
+    if(currentName !== e.name && e.name !== undefined){
+        console.log('update table');
+    }
+}
+function sendMessage(){
+    var now = new Date();
+    now = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDay(); 
+    var userName = $('.username').text();
+    msg ={
+        now:now,
+        name:userName,
+        bidding_price:$("#amount").val()
+    };
+    websocket.send(JSON.stringify(msg));
 }

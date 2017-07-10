@@ -28,7 +28,8 @@
       <ul class="nav navbar-nav navbar-right">
         <?php
           if(isset($_SESSION['username'])){
-            echo "<li><a><span><strong>歡迎登入 : " . $_SESSION['username'] . "</strong></span></a></li>";
+            echo "<li><a><span>歡迎登入 : <strong class='username'>" . $_SESSION['username'] . "</strong></span></a></li>";
+            echo "<li><a><span>剩餘餘額 ：<strong class='remain'>" . $_SESSION['point']. "</strong></span></a></li>";
             echo '<li><a href="./logout.php"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>';
           }else{
             echo '<li><a href="./register.php"><span class="glyphicon glyphicon-user"></span> 註冊</a></li>';

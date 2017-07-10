@@ -33,7 +33,7 @@ class ProductDetail{
             <div class="caption" style="height:255px;">
                 <div class="row">
                     <div class="text-center col-md-12">
-                        <h2>{$detail['price']}<span clsas="unit">元</span></h2>
+                        <h2 id="floor_price">{$detail['price']}<span clsas="unit">元</span></h2>
                     </div>
                 </div>
                 <div class="row">
@@ -44,6 +44,7 @@ class ProductDetail{
                 <div class="row" style="padding-bottom:10px;">
                     <div class="col-md-12 text-center">
                         <input id="amount" style="height:45px;border-radius:5px;" type="number" name="amount" placeholder="請輸入金額"/>
+                        <input type="hidden" id="product_id" value="{$_GET['id']}">
                     </div>
                 </div>
                 <div class="row">
@@ -87,7 +88,7 @@ class ProductDetail{
             </div>
         </div>
         <div class="col-md-4" style="height:255px;overflow:scroll">
-            <table class="table">
+            <table class="table bidding-table">
                 <thead>
                     <tr>
                         <th>時間</th>
@@ -97,61 +98,6 @@ class ProductDetail{
                 </thead>
                 <tbody>
                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
-                     <tr>
                         <td>10:00:00</td>
                         <td>test</td>
                         <td>1000</td>
