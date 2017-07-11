@@ -1,10 +1,17 @@
 var websocket ;
 var msg ;
 var currentDateTime ;
+var floor_price;
+var bidding_price ; // bidding price
 $(document).ready(function(){
+    var floor_price =  parseInt($('#floor_price').text());
+    console.log(floor_price);
     init();
     getBiddingHistory();
     postBiddingData();
+    updateBiddingCount();
+    updateTopPeople();
+    updateFloorPrice();
 });
 
 function init(){
@@ -23,7 +30,7 @@ function init(){
     websocket.onmessage = function(e){
         console.log('receive message success');
      //   console.log(e); 
-        updateTable(e);
+        updateTable(e);;
       //  websocket.close();
     };
 }
@@ -55,13 +62,15 @@ function getBiddingHistory(){
 }
 
 function postBiddingData(){
+    floor_price = $('#floor_price').text().split('元')[0];
+    bidding_price = $('#amount').val();
     $('.bidding').click(function(){
         $.ajax({
             url:'/biddingKing/Bidding/BiddingHistory.php',
             type:'post',
             data:{
-                price:$("#amount").val(),
-                floor_price:$("#floor_price").text().split('元')[0],
+                price:$('#amount').val(),
+                floor_price:$('#floor_price').text().split('元')[0],
                 productId :$("#product_id").val()
             },
             success:function(data){
@@ -71,6 +80,9 @@ function postBiddingData(){
                     updateNavbar();
                     appendToTable();
                     sendMessage();
+                    updateTopPeople();
+                    updateFloorPrice();
+                    updateBiddingCount();
                     return;
                 }
                 swal('餘額不足','','warning');
@@ -88,7 +100,7 @@ function appendToTable(){
     var tbody = $('.bidding-table').find('tbody');
     currentDateTime = getCurrentDateTime();
     var userName = $('.username').text();
-    $(tbody).append('<tr>\
+    $(tbody).prepend('<tr>\
                         <td>'+ currentDateTime + ' </td>\
                         <td>'+ userName + '</td>\
                         <td>' + $('#amount').val() + '</td>\
@@ -107,24 +119,46 @@ function getCurrentDateTime(){
     return now;
 }
 
+function convertTime(time) {        
+    var millis= time % 1000;
+    time = time/1000;
+    var seconds = parseInt(time % 60);
+    time = time/60;
+    var minutes = parseInt(time % 60);
+    time = time/60;
+    var hours = parseInt(time % 24);
+    var out = "";
+    if(hours && hours > 0) out += hours + " " + ((hours == 1)?"hr":"hrs") + " ";
+    if(minutes && minutes > 0) out += minutes + " " + ((minutes == 1)?"min":"mins") + " ";
+    if(seconds && seconds > 0) out += seconds + " " + ((seconds == 1)?"sec":"secs") + " ";
+    return out.trim();
+}
+
 function updateTable(e){
     var currentName = $('.username').text();
     var e_array = JSON.parse(e.data);
     var name ;
     var now ;
     var bidding_price;
+    var currentProductId = $('#product_id').val();
+    var product_id ;
     if(Array.isArray(e_array)){
         name = e_array[0]['name'];
         now = e_array[0]['now'];
         bidding_price = e_array[0]['bidding_price'];
+        product_id = e_array[0]['product_id'];
     }
-    if(currentName !== name && name !== undefined){
+    if(currentName !== name && name !== undefined && currentProductId === product_id){
         var tbody = $('.bidding-table').find('tbody');
-        $(tbody).append('<tr>\
+        $(tbody).prepend('<tr>\
                             <td>'+ now + ' </td>\
                         <td>'+ name + '</td>\
                         <td>' + bidding_price + '</td>\
                     </tr>');
+        
+        updateFloorPrice();
+        updateBiddingCount();
+        updateTopPeople();
     }
 }
 function sendMessage(){ 
@@ -132,7 +166,26 @@ function sendMessage(){
     msg ={
         now:currentDateTime,
         name:userName,
-        bidding_price:$("#amount").val()
+        bidding_price:$("#amount").val(),
+        product_id : $('#product_id').val()
     };
     websocket.send(JSON.stringify(msg));
+}
+
+function updateBiddingCount(){
+    var count = $('.bidding-table tbody tr').length;
+    $('#bidding_count').text(count);
+}
+function updateTopPeople(){
+    var topPepole= $('.bidding-table tbody tr:first td:nth-child(2)').text();
+    $('#top_people').text(topPepole);
+}
+
+function updateFloorPrice(){
+    var tr = $('.bidding-table tbody tr');
+    var tmp_floor_price = floor_price ; 
+    for(var index = 0 ; index < tr.length ; index ++){
+        tmp_floor_price = parseInt(tmp_floor_price) + parseInt($(tr[index]).find('td:last').text());
+    }
+    $('#floor_price').text(tmp_floor_price +'元');
 }

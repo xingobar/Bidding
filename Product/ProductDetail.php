@@ -74,7 +74,7 @@ class ProductDetail{
                                 <h5>最高下注人：</h5>
                             </div>
                             <div class="col-md-6">
-                                <h5>tttt</h5>
+                                <h5 id="top_people">tttt</h5>
                             </div>
                         </div>
                         <div class="row">
@@ -82,7 +82,7 @@ class ProductDetail{
                                 <h5>下標次數：</h5>
                             </div>
                             <div class="col-md-6">
-                                <h5>100</h5>
+                                <h5 id="bidding_count">100</h5>
                             </div>
                         </div>
                     </div>
