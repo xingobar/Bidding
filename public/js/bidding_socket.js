@@ -1,7 +1,9 @@
 var websocket ;
 var msg ;
+var currentDateTime ;
 $(document).ready(function(){
     init();
+    getBiddingHistory();
     postBiddingData();
 });
 
@@ -36,6 +38,22 @@ function sendText() {
   websocket.send(JSON.stringify(msg));
 }
 
+function getBiddingHistory(){
+    $.ajax({
+        url:'/biddingKing/Bidding/BiddingDetail.php',
+        type:'post',
+        data:{
+            productId :$("#product_id").val()
+        },
+        success:function(data){
+            console.log(data);
+        },
+        error:function(data){
+
+        }
+    });
+}
+
 function postBiddingData(){
     $('.bidding').click(function(){
         $.ajax({
@@ -68,15 +86,27 @@ function updateNavbar(){
 
 function appendToTable(){
     var tbody = $('.bidding-table').find('tbody');
-    var now = new Date();
-    now = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDay(); 
+    currentDateTime = getCurrentDateTime();
     var userName = $('.username').text();
     $(tbody).append('<tr>\
-                        <td>'+ now + ' </td>\
+                        <td>'+ currentDateTime + ' </td>\
                         <td>'+ userName + '</td>\
                         <td>' + $('#amount').val() + '</td>\
                     </tr>');
 }
+
+
+function getCurrentDateTime(){
+    var now = new Date();
+    var month = (now.getMonth() + 1 ) < 10 ? '0' + (now.getMonth()+1) : now.getMonth()+1;
+    var day = (now.getDay() < 10) ? '0' + now.getDay() : now.getDay();
+    var hours = (now.getHours() < 10 ) ? '0' +now.getHours() : now.getHours();
+    var minutes = (now.getMinutes() < 10 ) ? '0' + now.getMinutes() : now.getMinutes();
+    var seconds = (now.getSeconds() < 10) ? '0' + now.getSeconds() : now.getSeconds(); 
+    now = now.getFullYear()+'-'+ month +'-'+ day + ' ' + hours + ':' + minutes +':'+seconds; 
+    return now;
+}
+
 function updateTable(e){
     var currentName = $('.username').text();
     var e_array = JSON.parse(e.data);
@@ -85,7 +115,6 @@ function updateTable(e){
     var bidding_price;
     if(Array.isArray(e_array)){
         name = e_array[0]['name'];
-        console.log(name);
         now = e_array[0]['now'];
         bidding_price = e_array[0]['bidding_price'];
     }
@@ -98,12 +127,10 @@ function updateTable(e){
                     </tr>');
     }
 }
-function sendMessage(){
-    var now = new Date();
-    now = now.getFullYear()+'-'+(now.getMonth()+1)+'-'+now.getDay(); 
+function sendMessage(){ 
     var userName = $('.username').text();
     msg ={
-        now:now,
+        now:currentDateTime,
         name:userName,
         bidding_price:$("#amount").val()
     };

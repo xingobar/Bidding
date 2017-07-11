@@ -1,5 +1,6 @@
 <?php
 include_once('../DbConnection/DbConnect.php');
+include_once('../Bidding/BiddingDetail.php');
 
 class ProductDetail{
 
@@ -22,8 +23,9 @@ class ProductDetail{
     }
 
     public function showProduct(){
+        $biddingDetail = new BiddingDetail($this->id);
         $detail = $this->getProduct();
-        echo <<<REQUEST
+        $response =  <<<REQUEST
         <div class="col-md-4" style=height:255px;background-color:#f5f2f2">
             <div class="thumbnail" style="height:255px;">
                 <img src="{$detail['file_dir']}" alt="">
@@ -97,11 +99,10 @@ class ProductDetail{
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>10:00:00</td>
-                        <td>test</td>
-                        <td>1000</td>
-                    </tr>
+REQUEST;
+           
+             $response = $response . $biddingDetail->getAll();
+             $response = $response . <<<RESPONSE
                 </tbody>
             </table>
         </div>
@@ -136,7 +137,9 @@ class ProductDetail{
                 </small>
             </div>
         </div>
-REQUEST;
+RESPONSE;
+
+        echo $response;
     }
     
 }
