@@ -3,15 +3,17 @@ var msg ;
 var currentDateTime ;
 var floor_price;
 var bidding_price ; // bidding price
+var end_time ; 
 $(document).ready(function(){
     var floor_price =  parseInt($('#floor_price').text());
-    console.log(floor_price);
+    end_time = $('.timer').text();
     init();
     getBiddingHistory();
     postBiddingData();
     updateBiddingCount();
     updateTopPeople();
     updateFloorPrice();
+    updateEndTime();
 });
 
 function init(){
@@ -107,7 +109,6 @@ function appendToTable(){
                     </tr>');
 }
 
-
 function getCurrentDateTime(){
     var now = new Date();
     var month = (now.getMonth() + 1 ) < 10 ? '0' + (now.getMonth()+1) : now.getMonth()+1;
@@ -119,6 +120,20 @@ function getCurrentDateTime(){
     return now;
 }
 
+function updateEndTime(){
+    var diff ;
+    var timer = setInterval(function(){
+         diff = new Date(end_time) - new Date() ;
+         if(diff <=0){
+            clearInterval(timer);
+            console.log('clear interval');
+         }
+         diff = new Date(diff);
+         diff = convertTime(diff);
+         $('.timer').text(diff);
+    },1000);
+}
+
 function convertTime(time) {        
     var millis= time % 1000;
     time = time/1000;
@@ -128,9 +143,12 @@ function convertTime(time) {
     time = time/60;
     var hours = parseInt(time % 24);
     var out = "";
-    if(hours && hours > 0) out += hours + " " + ((hours == 1)?"hr":"hrs") + " ";
-    if(minutes && minutes > 0) out += minutes + " " + ((minutes == 1)?"min":"mins") + " ";
-    if(seconds && seconds > 0) out += seconds + " " + ((seconds == 1)?"sec":"secs") + " ";
+    hours =  (hours < 10) ? '0'+hours : hours;
+    out = hours +':';
+    minutes =  (minutes < 10) ? '0'+minutes : minutes;
+    out = out + minutes +':';
+    seconds =  (seconds <  10) ? '0' + seconds:seconds;
+    out = out + seconds;
     return out.trim();
 }
 
@@ -189,3 +207,4 @@ function updateFloorPrice(){
     }
     $('#floor_price').text(tmp_floor_price +'元');
 }
+

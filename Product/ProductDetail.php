@@ -40,7 +40,7 @@ class ProductDetail{
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1 style="margin-top:10px;"><strong>10:00:00</strong></h1>
+                        <h1 style="margin-top:10px;"><strong class="timer">{$detail['end_time']}</strong></h1>
                     </div>
                 </div>
                 <div class="row" style="padding-bottom:10px;">
