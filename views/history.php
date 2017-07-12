@@ -1,4 +1,3 @@
-<?php include_once('../Bidding/UserHistory.php');?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -13,9 +12,8 @@
         <?php include_once('./shared/navbar.php'); ?>
         <div class="container">
             <div class="table-title">
-                <h3>下標紀錄</h3>
+                <h3>交易紀錄</h3>
             </div>
-            <div style="height:450px;overflow:scroll;width:auto">
                 <table class="table-fill">
                     <thead>
                         <tr>
@@ -25,14 +23,13 @@
                         </tr>
                     </thead>
                     <tbody class="table-hover">
-                        <?php  
-                            $history = new UserHistory();
-                            $history->get();
-                        ?>
+                        <tr>
+                            <td class="text-left">2016/06/06</td>
+                            <td class="text-left">macbook</td>
+                            <td class="text-left">$5500</td>
+                        </tr>
                     </tbody>
                 </table>
-            </div>
-                
         </div>
         <script>
             $(document).ready(function(){

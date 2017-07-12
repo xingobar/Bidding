@@ -50,7 +50,6 @@ class Proxy implements IHandler{
         if($userExists === 1){
             $_SESSION['username'] = $user[0]['name'];
             $_SESSION['type'] = $user[0]['type'];
-            $_SESSION['point'] = $user[0]['point'];
             $this->isSuccess = true;
         }
         return $this->isSuccess;

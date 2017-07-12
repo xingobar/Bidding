@@ -1,6 +1,5 @@
 <?php
 include_once('../DbConnection/DbConnect.php');
-include_once('../Bidding/BiddingDetail.php');
 
 class ProductDetail{
 
@@ -23,9 +22,8 @@ class ProductDetail{
     }
 
     public function showProduct(){
-        $biddingDetail = new BiddingDetail($this->id);
         $detail = $this->getProduct();
-        $response =  <<<REQUEST
+        echo <<<REQUEST
         <div class="col-md-4" style=height:255px;background-color:#f5f2f2">
             <div class="thumbnail" style="height:255px;">
                 <img src="{$detail['file_dir']}" alt="">
@@ -35,18 +33,17 @@ class ProductDetail{
             <div class="caption" style="height:255px;">
                 <div class="row">
                     <div class="text-center col-md-12">
-                        <h2 id="floor_price">{$detail['price']}<span clsas="unit">元</span></h2>
+                        <h2>{$detail['price']}<span clsas="unit">元</span></h2>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1 style="margin-top:10px;"><strong class="timer">{$detail['end_time']}</strong></h1>
+                        <h1 style="margin-top:10px;"><strong>10:00:00</strong></h1>
                     </div>
                 </div>
                 <div class="row" style="padding-bottom:10px;">
                     <div class="col-md-12 text-center">
                         <input id="amount" style="height:45px;border-radius:5px;" type="number" name="amount" placeholder="請輸入金額"/>
-                        <input type="hidden" id="product_id" value="{$_GET['id']}">
                     </div>
                 </div>
                 <div class="row">
@@ -74,7 +71,7 @@ class ProductDetail{
                                 <h5>最高下注人：</h5>
                             </div>
                             <div class="col-md-6">
-                                <h5 id="top_people">tttt</h5>
+                                <h5>tttt</h5>
                             </div>
                         </div>
                         <div class="row">
@@ -82,7 +79,7 @@ class ProductDetail{
                                 <h5>下標次數：</h5>
                             </div>
                             <div class="col-md-6">
-                                <h5 id="bidding_count">100</h5>
+                                <h5>100</h5>
                             </div>
                         </div>
                     </div>
@@ -90,7 +87,7 @@ class ProductDetail{
             </div>
         </div>
         <div class="col-md-4" style="height:255px;overflow:scroll">
-            <table class="table bidding-table">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>時間</th>
@@ -99,10 +96,66 @@ class ProductDetail{
                     </tr>
                 </thead>
                 <tbody>
-REQUEST;
-           
-             $response = $response . $biddingDetail->getAll();
-             $response = $response . <<<RESPONSE
+                    <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
+                     <tr>
+                        <td>10:00:00</td>
+                        <td>test</td>
+                        <td>1000</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -137,9 +190,7 @@ REQUEST;
                 </small>
             </div>
         </div>
-RESPONSE;
-
-        echo $response;
+REQUEST;
     }
     
 }
