@@ -34,9 +34,9 @@ class ProductInfo{
                     </div>
                 </div>
 REQUEST;
-        }
+                    }
 
     }
+
 }
 ?>
-
