@@ -21,5 +21,6 @@ $productInfo = new ProductInfo();
                 ?>
             </div>
         </div>
+        <script src="../public/js/timer.js"> </script>
     </body>
 </html>

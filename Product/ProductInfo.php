@@ -23,7 +23,7 @@ class ProductInfo{
                         <div class="caption">
                             <h4 class="pull-right"><span class="symbol">$</span>{$product['price']}<span class="unit">元</span></h4>
                             <h4><a href="#">{$product['name']}</a></h4>
-                            <p class="text-center" style="font-size:1.5em"><strong>10:00:00</strong></p>
+                            <p class="text-center" style="font-size:1.5em"><strong class="timer">{$product['end_time']}</strong></p>
                             <div class="row text-center">
                                 <div class="col-md-12">
                                     <button type="button" class="btn btn-danger">產品下標</button>

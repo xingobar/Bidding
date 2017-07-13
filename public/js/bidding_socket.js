@@ -66,6 +66,8 @@ function getBiddingHistory(){
 function postBiddingData(){
     floor_price = $('#floor_price').text().split('元')[0];
     bidding_price = $('#amount').val();
+    var test = $('#floor_price').text();
+    console.log(test);
     $('.bidding').click(function(){
         $.ajax({
             url:'/biddingKing/Bidding/BiddingHistory.php',
