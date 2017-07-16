@@ -77,9 +77,9 @@ class File{
     }
 
     public function insertData(){
-        $sql = 'insert into product (name,price,description,
+        $sql = 'INSERT INTO product (name,price,description,
                 created_at,file_dir,promotion,end_time)
-                values(:name,:price,:description,
+                VALUES(:name,:price,:description,
                        :created_at,:file_dir,:promotion,
                        :end_time)';
         $query = $this->conn->prepare($sql);

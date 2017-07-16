@@ -12,9 +12,10 @@ class UserHistory{
 
     public function get(){
         $user_id = $this->getUerId();
-        $sql = "select history.created_at,history.price,product.name from history
-            inner join product on history.product_id = product.id
-            where history.user_id = $user_id";
+        $sql = "SELECT history.created_at,history.price,product.name 
+                FROM history
+                INNER JOIN product ON history.product_id = product.id
+                WHERE history.user_id = $user_id";
         
         $query = $this->conn->query($sql);
         $results = $query->fetchAll();
@@ -33,7 +34,7 @@ REQUEST;
 
     public function getUerId(){
         $name = $_SESSION['username'];
-        $sql = "select * from user where name = '$name'";
+        $sql = "SELECT * FROM user WHERE name = '$name'";
         $query = $this->conn->query($sql);
         return $query->fetch()['id'];
     }

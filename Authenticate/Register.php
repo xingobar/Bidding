@@ -49,7 +49,7 @@ class Register{
     }
 
     public function checkUserExists(){
-        $query = $this->conn->prepare('select * from user where name = :name');
+        $query = $this->conn->prepare('SELECT * FROM user WHERE name = :name');
         $query->execute(array(
             'name' => $this->userName
         ));
@@ -61,7 +61,7 @@ class Register{
     }
 
     public function checkEmailExists(){
-        $query = $this->conn->prepare('select * from user where email = :email');
+        $query = $this->conn->prepare('SELECT * FROM user WHERE email = :email');
         $query->execute(array(
             'email'=>$this->email
         ));
@@ -77,8 +77,8 @@ class Register{
     }
 
     public function insertData(){
-        $sql = 'insert into user (name,email,password,address)
-                values(:name,:email,:password,:address)';
+        $sql = 'INSERT INTO user (name,email,password,address)
+                VALUES(:name,:email,:password,:address)';
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'name'=>$this->name,

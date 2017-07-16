@@ -13,10 +13,11 @@ class BiddingDetail{
     }
 
     public function getAll(){
-        $sql = "select history.created_at,user.name,history.price from history 
-                inner join user on history.user_id = user.id
-                where history.product_id = $this->productId
-                order by history.created_at desc";
+        $sql = "SELECT history.created_at,user.name,history.price 
+                FROM history 
+                INNER JOIN user ON history.user_id = user.id
+                WHERE history.product_id = $this->productId
+                ORDER BY history.created_at DESC";
         $query = $this->conn->query($sql);
         $history = $query->fetchAll();
         $response = '';

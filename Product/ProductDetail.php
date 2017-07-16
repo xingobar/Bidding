@@ -13,7 +13,7 @@ class ProductDetail{
     }
 
     public function getProduct(){
-        $sql = 'select * from product where id = :id';
+        $sql = 'SELECT * FROM product WHERE id = :id';
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'id'=>$this->id

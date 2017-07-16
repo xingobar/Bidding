@@ -39,7 +39,8 @@ class Proxy implements IHandler{
     public function isAuth(){
         session_unset();
         $tempPassword = md5($this->password);
-        $sql = 'select * from user where email=:email and password = :password';
+        $sql = 'SELECT * FROM user WHERE email=:email
+                AND password = :password';
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'email'=>$this->email,

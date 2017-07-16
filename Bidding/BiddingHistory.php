@@ -23,8 +23,8 @@ class BiddingHistory{
             $cdate = new DateTime();
             $cdate = $cdate->format('Y-m-d H:i:s');
             $userId = $this->getUserId();
-            $sql = 'insert into history (user_id,price,product_id,created_at)
-                    values(:user_id,:price,:product_id,:created_at)';
+            $sql = 'INSERT INTO history (user_id,price,product_id,created_at)
+                    VALUES(:user_id,:price,:product_id,:created_at)';
             $query = $this->conn->prepare($sql);
             $query->execute(array(
                 'user_id'=>$userId,
@@ -41,7 +41,7 @@ class BiddingHistory{
     }
 
     public function getUserId(){
-        $sql = " select id from user where name = '$this->user'";
+        $sql = " SELECT id FROM user WHERE name = '$this->user'";
         $query = $this->conn->query($sql);
         $userId = $query->fetch()['id'];
         return $userId;
@@ -50,7 +50,7 @@ class BiddingHistory{
     public function minusUserPoint(){
         $amount = $this->getUserPoint();
         $amount -= $this->bidding_price;
-        $sql = "update user set point = $amount where name = '$this->user'";
+        $sql = "UPDATE user SET point = $amount WHERE name = '$this->user'";
         $query = $this->conn->prepare($sql);
         $query->execute();
         $_SESSION['point'] = $amount;
@@ -61,7 +61,7 @@ class BiddingHistory{
     }
 
     public function getUserPoint(){
-        $sql = "select point from user where name = '$this->user'";
+        $sql = "SELECT point FROM user WHERE name = '$this->user'";
         $query = $this->conn->query($sql);
         $amount = $query->fetch()['point'];
         return $amount;
