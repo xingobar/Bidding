@@ -10,7 +10,7 @@ class ProductInfo{
     }
 
     public function show(){
-        $sql = 'select * from product';
+        $sql = 'select * from product where end = false';
         $query = $this->conn->prepare($sql);
         $query->execute();
         $products = $query->fetchAll();

@@ -10,7 +10,7 @@ class PromotionProduct {
     }
 
     public function show(){
-        $sql = 'select * from product where promotion = 1';
+        $sql = 'select * from product where promotion = 1 and end = 0';
         $query = $this->conn->prepare($sql);
         $query->execute();
         $products = $query->fetchAll();

@@ -45,13 +45,20 @@ function convertTime(time) {
 
 function updateEndTime(){
     var diff ;
+	var url='../views/product_detail.php?id=';
   	var timer = setInterval(function(){
   		for(var index = 0 ; index < getTime.length ; index++){
   			var element = $(getTime)[index];
   			var text = timeInnerHtmlArr[index];
   			diff = new Date(text) - new Date();
   			if(diff <=0){
-  				console.log(' end time less than now');
+				var parentWrapepr = $($(getTime)[index]).parents('div.col-md-3');
+				var a_tag = $($(getTime)[index]).parent().siblings('div.row.text-center').find('.col-md-12 a');
+				var href = a_tag.attr('href');
+				var productId = href.split(url)[1];
+				getTime.splice(index,1); // remove array
+				postShoppingCart(productId);
+				$(parentWrapepr).remove();
   			}
   			diff = new Date(diff);
   			diff = convertTime(diff);
@@ -60,6 +67,28 @@ function updateEndTime(){
   	},1000);
 }
 
+function postShoppingCart(productId){
+	$.ajax({
+		url:'../Cart/ShoppingCart.php',
+		type:'post',
+		data:{
+			userName:$('.username').text(),
+			productId:productId,
+			functionName:'insert'
+		},
+		success:function(data){
+			if(data.length !== 0){
+				var data = JSON.parse(data);
+				if(data.msg === 'success'){
+					swal(data.productName+ '成功得標','','success');
+					var productNumber = parseInt($('.cart').text());
+					productNumber +=1;
+					$('.cart').text(productNumber);
+				}
+			}
+		}
+	})
+}
 
 function convertTime(time) {        
     var millis= time % 1000;

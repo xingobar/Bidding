@@ -1,4 +1,5 @@
 <?php session_start();?>
+<?php include_once('../Cart/ShoppingCart.php');?>
 <nav class="navbar navbar-default">
   <div class="container">
     <div class="navbar-header">
@@ -28,8 +29,11 @@
       <ul class="nav navbar-nav navbar-right">
         <?php
           if(isset($_SESSION['username'])){
+            $shoppingCart = new ShoppingCart();
+            $productCount = $shoppingCart->getUserProductCount();
             echo "<li><a><span>歡迎登入 : <strong class='username'>" . $_SESSION['username'] . "</strong></span></a></li>";
             echo "<li><a><span>剩餘餘額 ：<strong class='remain'>" . $_SESSION['point']. "</strong></span></a></li>";
+            echo "<li><a><span class='glyphicon glyphicon-shopping-cart'></span><strong> 購物車 <span class='badge cart'>". $productCount ."</span></strong></a></li>";
             echo '<li><a href="./logout.php"><span class="glyphicon glyphicon-log-out"></span> 登出</a></li>';
           }else{
             echo '<li><a href="./register.php"><span class="glyphicon glyphicon-user"></span> 註冊</a></li>';
