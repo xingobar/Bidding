@@ -10,12 +10,13 @@ class ShoppingCart{
     private $functionName;
 
     public function __construct(){
+        session_start();
         $this->conn = DbConnect::connect();
     }
 
     public function setUserId(){
         $userName = $_POST['userName'];
-        $sql = 'select id from user where name = :name';
+        $sql = 'SELECT id FROM user WHERE name = :name';
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'name' => $userName
@@ -24,8 +25,8 @@ class ShoppingCart{
     }
 
     public function insert(){
-        $sql = 'insert into cart (user_id,product_id)
-                    values (:user_id,:product_id)';
+        $sql = 'INSERT INTO cart (user_id,product_id)
+                    VALUES (:user_id,:product_id)';
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'user_id' => $this->userId,
@@ -34,7 +35,8 @@ class ShoppingCart{
     }
 
     public function updateProductEnd(){
-        $sql = 'update product set end = :end where id = :product_id';
+        $sql = 'UPDATE product 
+                SET end = :end WHERE id = :product_id';
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'end' => true,
@@ -43,7 +45,9 @@ class ShoppingCart{
     }
 
     public function isRecordExists(){
-        $sql = 'select * from cart where user_id = :user_id and product_id = :product_id';
+        $sql = 'SELECT * FROM cart 
+                WHERE user_id = :user_id 
+                AND product_id = :product_id';
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'user_id' => $this->userId,
@@ -57,7 +61,8 @@ class ShoppingCart{
     }
 
     public function getTopOneHistory(){
-        $sql = "select * from history where product_id = :productId order by created_at desc limit 1";
+        $sql = "SELECT * FROM history WHERE product_id = :productId
+                ORDER BY created_at DESC LIMIT 1";
         $query = $this->conn->prepare($sql);
         $query->execute(array(
             'productId' => $this->productId
@@ -66,7 +71,7 @@ class ShoppingCart{
     }
 
     public function getProductName(){
-        $sql = "select name from product where id = $this->productId";
+        $sql = "SELECT name FROM product WHERE id = $this->productId";
         $query = $this->conn->prepare($sql);
         $query->execute();
         return $query->fetch()['name'];
@@ -95,8 +100,8 @@ class ShoppingCart{
 
     public function getUserProductCount(){
         $userId = $this->getUserId();
-        $sql = "select * from cart 
-        where user_id = $userId";
+        $sql = "SELECT * FROM cart 
+                WHERE user_id = $userId";
         $query = $this->conn->prepare($sql);
         $query->execute();
         $rowCount = $query->rowCount();
@@ -104,12 +109,38 @@ class ShoppingCart{
     }
     
     public function getUserId(){
-        session_start();
         $userName = $_SESSION['username'];
-        $sql = "select id from user where name ='$userName'";
+        $sql = "SELECT id FROM user WHERE name ='$userName'";
         $query = $this->conn->prepare($sql);
         $query->execute();
         return $query->fetch()['id'];
+    }
+
+    public function getBelongsToUserProduct(){
+        $userId = $this->getUserId();
+        $sql = "SELECT product.name,product.end_time,
+                       product.file_dir AS image,
+                       product.price as base_price,
+                       sum(history.price) as totalTurnOver
+                FROM cart 
+                INNER JOIN product ON cart.product_id = product.id
+                INNER JOIN history ON cart.product_id = history.product_id 
+                WHERE history.user_id = '$userId'
+                GROUP BY product.name";
+        $query = $this->conn->prepare($sql);
+        $query->execute();
+        $products = $query->fetchAll();
+        foreach($products as $product){
+            $total = $product['base_price'] + $product['totalTurnOver'];
+            echo <<<REQUEST
+                <tr>
+                    <td>{$product['end_time']}</td>
+                    <td><img class="img-responsive" src="{$product['image']}"/></td>
+                    <td style="width:114px;height:114px;">{$product['name']}</td>
+                    <td>{$total}</td>
+                </tr>
+REQUEST;
+        }
     }
 }
 
